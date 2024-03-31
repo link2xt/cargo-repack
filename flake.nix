@@ -11,7 +11,7 @@
       {
         formatter = pkgs.nixpkgs-fmt;
         devShell = pkgs.mkShell {
-          packages = [ pkgs.diffoscope pkgs.python3 ];
+          packages = [ pkgs.diffoscope pkgs.python3 pkgs.cargo ];
         };
       }
     );
