@@ -123,10 +123,6 @@ def main():
             # https://github.com/tailhook/resolv-conf/pull/34
             repository = "https://github.com/tailhook/resolv-conf"
 
-        if not repository.startswith("https://github.com/"):
-            print(f"{crate_name}-{crate_version} is not hosted on GitHub: {repository}")
-            continue
-
         # Workaround for URLs like `https://github.com/RustCrypto/formats/tree/master/base16ct`
         # Fix is submitted at <https://github.com/RustCrypto/formats/pull/1373>
         if matched := re.compile(
