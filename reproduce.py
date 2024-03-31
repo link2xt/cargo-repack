@@ -55,7 +55,7 @@ def main():
                     "-O",
                     str(crate_path),
                     "--",
-                    f"https://crates.io/api/v1/crates/{crate_name}/{crate_version}/download",
+                    f"https://static.crates.io/crates/{crate_name}/{crate_fullname}.crate",
                 ]
             )
         with crate_path.open("rb") as fp:
@@ -217,10 +217,6 @@ def main():
                     diffoscope = subprocess.run(
                         [
                             "diffoscope",
-                            "--exclude",
-                            "**/Cargo.lock",
-                            "--exclude",
-                            "**/Cargo.toml",
                             "--",
                             str(crate_path),
                             str(rebuilt_package_path),
