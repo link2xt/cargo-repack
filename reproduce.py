@@ -72,8 +72,13 @@ def main():
             )
             vcs_info = json.load(vcs_info_file)
         except KeyError:
-            print(f"Crate {crate_name}-{crate_version} has no VCS info")
-            continue
+            if crate_fullname == "crc24-0.1.6":
+                vcs_info = {
+                    "git": {"sha1": {"f657c15d42a80f160712435ad6a486082b5c814e"}}
+                }
+            else:
+                print(f"Crate {crate_name}-{crate_version} has no VCS info")
+                continue
 
         if crate_name == "crunchy":
             # https://github.com/eira-fransham/crunchy/pull/11
@@ -141,6 +146,17 @@ def main():
             # Revision from vcs info is missing in the repository.
             continue
 
+        if path_in_vcs := {
+            "async-mutex-1.4.0": "async-mutex",
+            "dirs-sys-next-0.1.2": "dirs-sys",
+            "proc-macro-error-attr-1.0.4": "proc-macro-error-attr",
+            "rand_chacha-0.2.2": "rand_chacha",
+            "rand_chacha-0.3.1": "rand_chacha",
+            "rand_core-0.5.1": "rand_core",
+            "rand_xorshift-0.3.0": "rand_xorshift",
+        }.get(crate_fullname):
+            vcs_info["path_in_vcs"] = path_in_vcs
+
         if crate_fullname in [
             "convert_case-0.5.0",
             "gimli-0.28.1",
@@ -201,8 +217,7 @@ def main():
             )
 
         if not rebuilt_package_path.exists():
-            print(f"Package {crate_fullname} was not rebuilt.")
-            continue
+            raise ValueError(f"Package {crate_fullname} was not rebuilt")
 
         with rebuilt_package_path.open("rb") as fp:
             digest = hashlib.file_digest(fp, "sha256")
